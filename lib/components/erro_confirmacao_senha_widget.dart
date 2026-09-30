@@ -62,8 +62,8 @@ class _ErroConfirmacaoSenhaWidgetState
               },
               text: '',
               options: FFButtonOptions(
-                width: 170.0,
-                height: 30.0,
+                width: 200.0,
+                height: 50.0,
                 padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                 iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                 color: Colors.transparent,

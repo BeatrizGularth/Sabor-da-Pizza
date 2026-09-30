@@ -18,6 +18,11 @@ class EnderecoModel extends FlutterFlowModel<EnderecoWidget> {
   TextEditingController? textFieldLograTextController;
   String? Function(BuildContext, String?)?
       textFieldLograTextControllerValidator;
+  // State field(s) for TextFieldNumero widget.
+  FocusNode? textFieldNumeroFocusNode;
+  TextEditingController? textFieldNumeroTextController;
+  String? Function(BuildContext, String?)?
+      textFieldNumeroTextControllerValidator;
   // State field(s) for TextFieldBairro widget.
   FocusNode? textFieldBairroFocusNode;
   TextEditingController? textFieldBairroTextController;
@@ -40,6 +45,8 @@ class EnderecoModel extends FlutterFlowModel<EnderecoWidget> {
   FocusNode? textFieldRefFocusNode;
   TextEditingController? textFieldRefTextController;
   String? Function(BuildContext, String?)? textFieldRefTextControllerValidator;
+  // Stores action output result for [Backend Call - API (CadEndereco)] action in Button widget.
+  ApiCallResponse? aPICadEnd;
 
   @override
   void initState(BuildContext context) {}
@@ -51,6 +58,9 @@ class EnderecoModel extends FlutterFlowModel<EnderecoWidget> {
 
     textFieldLograFocusNode?.dispose();
     textFieldLograTextController?.dispose();
+
+    textFieldNumeroFocusNode?.dispose();
+    textFieldNumeroTextController?.dispose();
 
     textFieldBairroFocusNode?.dispose();
     textFieldBairroTextController?.dispose();

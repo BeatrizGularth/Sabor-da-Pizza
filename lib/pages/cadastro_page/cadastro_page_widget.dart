@@ -1,3 +1,4 @@
+import '/backend/api_requests/api_calls.dart';
 import '/components/erro_c_p_f_widget.dart';
 import '/components/erro_campos_nao_preenchidos_widget.dart';
 import '/components/erro_confirmacao_senha_widget.dart';
@@ -1023,16 +1024,86 @@ class _CadastroPageWidgetState extends State<CadastroPageWidget> {
                                         0.0, 80.0, 0.0, 0.0),
                                     child: FFButtonWidget(
                                       onPressed: () async {
-                                        if (_model.tFSenhaTextController.text !=
-                                                '') {
-                                          if (_model
-                                                  .tFConfirmarSenhaTextController
-                                                  .text ==
-                                              _model
-                                                  .tFSenhaTextController.text) {
-                                            context.pushNamed(
-                                                VerificacaoEmailWidget
-                                                    .routeName);
+                                        var _shouldSetState = false;
+                                        _model.aPICadDados =
+                                            await CadDadosCall.call(
+                                          nome:
+                                              _model.tFNomeTextController.text,
+                                          email:
+                                              _model.tFEMailTextController.text,
+                                          cfp: _model.tfCpfTextController.text,
+                                        );
+
+                                        _shouldSetState = true;
+                                        if ((_model.aPICadDados?.succeeded ??
+                                            true)) {
+                                          if (_model.tFSenhaTextController
+                                                      .text !=
+                                                  '') {
+                                            if (_model
+                                                    .tFConfirmarSenhaTextController
+                                                    .text ==
+                                                _model.tFSenhaTextController
+                                                    .text) {
+                                              await showDialog(
+                                                context: context,
+                                                builder: (alertDialogContext) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                        'A primeira parte concluída!'),
+                                                    content: Text(
+                                                        'Continue e termine de cadastrar seus dados.'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                alertDialogContext),
+                                                        child: Text('Ok'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+
+                                              context.pushNamed(
+                                                  VerificacaoEmailWidget
+                                                      .routeName);
+                                            } else {
+                                              await showDialog(
+                                                context: context,
+                                                builder: (dialogContext) {
+                                                  return Dialog(
+                                                    elevation: 0,
+                                                    insetPadding:
+                                                        EdgeInsets.zero,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    alignment:
+                                                        AlignmentDirectional(
+                                                                0.0, 0.0)
+                                                            .resolve(
+                                                                Directionality.of(
+                                                                    context)),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        FocusScope.of(
+                                                                dialogContext)
+                                                            .unfocus();
+                                                        FocusManager.instance
+                                                            .primaryFocus
+                                                            ?.unfocus();
+                                                      },
+                                                      child:
+                                                          ErroConfirmacaoSenhaWidget(),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            }
+
+                                            if (_shouldSetState)
+                                              safeSetState(() {});
+                                            return;
                                           } else {
                                             await showDialog(
                                               context: context,
@@ -1058,44 +1129,24 @@ class _CadastroPageWidgetState extends State<CadastroPageWidget> {
                                                           ?.unfocus();
                                                     },
                                                     child:
-                                                        ErroConfirmacaoSenhaWidget(),
+                                                        ErroCamposNaoPreenchidosWidget(),
                                                   ),
                                                 );
                                               },
                                             );
+
+                                            if (_shouldSetState)
+                                              safeSetState(() {});
+                                            return;
                                           }
                                         } else {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (dialogContext) {
-                                              return Dialog(
-                                                elevation: 0,
-                                                insetPadding: EdgeInsets.zero,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                alignment: AlignmentDirectional(
-                                                        0.0, 0.0)
-                                                    .resolve(Directionality.of(
-                                                        context)),
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    FocusScope.of(dialogContext)
-                                                        .unfocus();
-                                                    FocusManager
-                                                        .instance.primaryFocus
-                                                        ?.unfocus();
-                                                  },
-                                                  child: Container(
-                                                    height: 450.0,
-                                                    width: 450.0,
-                                                    child:
-                                                        ErroCamposNaoPreenchidosWidget(),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          );
+                                          if (_shouldSetState)
+                                            safeSetState(() {});
+                                          return;
                                         }
+
+                                        if (_shouldSetState)
+                                          safeSetState(() {});
                                       },
                                       text: 'Continuar',
                                       options: FFButtonOptions(

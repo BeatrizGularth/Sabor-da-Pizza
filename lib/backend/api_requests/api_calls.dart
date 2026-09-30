@@ -45,6 +45,72 @@ class BuscarCepCall {
       );
 }
 
+class CadEnderecoCall {
+  static Future<ApiCallResponse> call({
+    String? cep = '',
+    String? logradouro = '',
+    String? numero = '',
+    String? complemento = '',
+    String? bairro = '',
+    String? referencia = '',
+  }) async {
+    final ffApiRequestBody = '''
+{
+  "cep": ${cep == null ? 'null' : '"${escapeStringForJson(cep)}"'},
+  "logradouro": ${logradouro == null ? 'null' : '"${escapeStringForJson(logradouro)}"'},
+  "numero": ${numero == null ? 'null' : '"${escapeStringForJson(numero)}"'},
+  "complemento": ${complemento == null ? 'null' : '"${escapeStringForJson(complemento)}"'},
+  "bairro": ${bairro == null ? 'null' : '"${escapeStringForJson(bairro)}"'},
+  "referencia": ${referencia == null ? 'null' : '"${escapeStringForJson(referencia)}"'}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'CadEndereco',
+      apiUrl: 'https://x8ki-letl-twmt.n7.xano.io/api:vtrulFH0/endereco',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class CadDadosCall {
+  static Future<ApiCallResponse> call({
+    String? nome = '',
+    String? email = '',
+    String? cfp = '',
+  }) async {
+    final ffApiRequestBody = '''
+{
+  "nome": ${nome == null ? 'null' : '"${escapeStringForJson(nome)}"'},
+  "email": ${email == null ? 'null' : '"${escapeStringForJson(email)}"'},
+  "cpf": ${cfp == null ? 'null' : '"${escapeStringForJson(cfp)}"'}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'CadDados',
+      apiUrl: 'https://x8ki-letl-twmt.n7.xano.io/api:vtrulFH0/cadastro',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
 class ApiPagingParams {
   int nextPageNumber = 0;
   int numItems = 0;
@@ -87,4 +153,15 @@ String _serializeJson(dynamic jsonVar, [bool isList = false]) {
     }
     return isList ? '[]' : '{}';
   }
+}
+
+String? escapeStringForJson(String? input) {
+  if (input == null) {
+    return null;
+  }
+  return input
+      .replaceAll('\\', '\\\\')
+      .replaceAll('"', '\\"')
+      .replaceAll('\n', '\\n')
+      .replaceAll('\t', '\\t');
 }

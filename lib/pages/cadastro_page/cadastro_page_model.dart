@@ -1,3 +1,4 @@
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'cadastro_page_widget.dart' show CadastroPageWidget;
@@ -58,6 +59,9 @@ class CadastroPageModel extends FlutterFlowModel<CadastroPageWidget> {
 
     return null;
   }
+
+  // Stores action output result for [Backend Call - API (CadDados)] action in Button_Cadastro widget.
+  ApiCallResponse? aPICadDados;
 
   @override
   void initState(BuildContext context) {
